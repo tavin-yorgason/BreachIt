@@ -1,76 +1,81 @@
 <!doctype html>
-<html></html>
+<html lang="en">
 <head>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home — BreachIt</title>
-  <link rel="stylesheet" href="BreachItStyle.css" />
-  <meta name="description" content="BreachIt Homepage." />
+  <title>BreachIt — Home</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="BreachItStyle.css">
 </head>
 <body>
-  <header class="border-bottom bg-body sticky-top">
-    <nav class="navbar navbar-expand-lg">
-       <div class="container justify-content-center">
-       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
-           <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-center w-100" id="nav">
-          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link active" href="BreachItIntex.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="BreachItQueries.html">Queries </a></li>
-            <li class="nav-item"><a class="nav-link" href="BreachItAbout.html">About</a></li>
-            <li class="nav-item"><a class="nav-link" href="BreachItContact.html">Contact</a></li>
-          </ul>
-        </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark glass-nav sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-semibold text-glow" href="BreachItIndex.html">BreachIt</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto gap-2">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="BreachItIndex.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="BreachItQueries.html">Queries</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="BreachItAbout.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="BreachItContact.html">Contact</a>
+          </li>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="py-5 text-center">
+    <div class="container">
+      <h1 class="display-4 fw-bold mb-2 text-glow">BreachIt</h1>
+      <p class="lead text mb-2">Pushing AI Security To Its Limits</p>
+    </div>
   </header>
 
-  <main>
-    <section class="py-5 text-center">
-        <div class="container">
-            <div class="mb-2">
-                <i class ="bi bi-brigtness-high-fill" style="font-size:3rem;"></i>
-            </div>
-            <h1 class="display-4 fw-bold mb-2 sun-glow">BreachIt</h1>
-            <p class="lead mb-0">
-                Pushing AI Security To It's Limits
-            </p>
-        </div>
-    </section>
+  <!-- Main Container -->
+  <main class="container d-flex justify-content-center pb-5">
+    <div class="glass-card text-center">
 
-    <section class="py-5">
-        <div class="conatiner text-center">
-            <br></br>
-            <h2 class="h3 fw-bold mb-3">
-                What We Offer
-            </h2>
-            <p class="mx-auto mb-4" style="max-width: 760px;">
-                Sunlight is an essential part of all life! With that being said, the Sun is not always around, we plan on fixing that. By our state of the art technology
-                we are able to redirect sunlight to any part of the world! Is it too dark outside and you want more sunlight? We can help. Is your area just too rainy 
-                and cloudy all the time? That's what we are here for. The world is not always sunshine and rainbows, but with the help of Sunny Sales it can be (for the right price ;).
-            </p>
-            <a href="BreachItQueries.html" class="btn btn-glass btn-lg">Try It Out!</a>
-        </div>
-    </section>
+      <h2 class="h4 fw-bold mb-3">What We Offer</h2>
+      <p class="text-light small mb-4 px-3" style="max-width: 720px; margin: auto;">
+        At <strong>BreachIt</strong>, we believe AI security should evolve as fast as the threats that challenge it.
+        Our advanced technology detects, isolates, and neutralizes vulnerabilities before they become breaches.
+        Whether you’re a developer, enterprise, or security researcher — BreachIt helps you stay one step ahead.
+      </p>
+      <a href="BreachItQueries.html" class="btn btn-glass btn-lg">Try It Now!</a>
+    </div>
   </main>
 
-<footer class="bg-light text-lg-start border-top fixed-bottom">
-    <ul class="nav ps-3">
-      <li class="nav-item">
-        <a class="nav-link text-muted" href="terms.html">Terms and Conditions</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-muted" href="privacy.html">Privacy Policy</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-muted" href="cookies.html">Cookies</a>
-      </li>
-    </ul>
-  <div class="text-muted small pb-2 ps-2">
-    Copyright @2025 Dax Collins
-  </div>
-</footer>
+  <!-- Footer -->
+  <footer class="py-3 text-start border-top glass-footer fixed-bottom">
+    <div class="container small d-flex flex-wrap gap-3">
+      <a class="nav-link p-0 text" href="terms.html">Terms and Conditions</a>
+      <a class="nav-link p-0 text" href="privacy.html">Privacy Policy</a>
+      <a class="nav-link p-0 text" href="cookies.html">Cookies</a>
+      <span class="text ms-auto">Copyright ©2025 Dax Collins</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

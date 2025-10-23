@@ -1,0 +1,59 @@
+# =====================
+# Python / Flask
+# =====================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+instance/
+.env
+.venv/
+venv/
+ENV/
+env/
+*.env
+
+# Flask-related
+*.log
+*.pid
+
+# =====================
+# Frontend (JavaScript / Node)
+# =====================
+node_modules/
+dist/
+build/
+.cache/
+*.log
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# =====================
+# Testing / Coverage
+# =====================
+.coverage
+htmlcov/
+coverage/
+
+# =====================
+# IDE / Editor / OS
+# =====================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# =====================
+# Misc
+# =====================
+*.tmp
+*.bak
+*.orig

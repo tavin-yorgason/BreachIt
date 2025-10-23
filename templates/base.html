@@ -1,3 +1,5 @@
+{% from "_macros.html" import nav_link %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,18 +19,10 @@
       </button>
       <div class="collapse navbar-collapse" id="nav">
         <ul class="navbar-nav ms-auto gap-2">
-          <li class="nav-item">
-            <a class="nav-link" href="home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="queries">Queries</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contact">Contact</a>
-          </li>
+          {{ nav_link('home', 'Home') }}
+          {{ nav_link('queries', 'Queries') }}
+          {{ nav_link('about', 'About') }}
+          {{ nav_link('contact', 'Contact') }}
         </ul>
       </div>
     </div>
@@ -42,7 +36,7 @@
       <a class="nav-link p-0 text" href="terms.html">Terms and Conditions</a>
       <a class="nav-link p-0 text" href="privacy.html">Privacy Policy</a>
       <a class="nav-link p-0 text" href="cookies.html">Cookies</a>
-      <span class="text ms-auto">Copyright ©2025</span>
+      <span class="text ms-auto">Copyright ©2025 Dax Collins, Tavin Yorgason, and Joshua Werner</span>
     </div>
   </footer>
 

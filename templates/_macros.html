@@ -1,0 +1,9 @@
+{% macro nav_link(endpoint, text) %}
+  <li class="nav-item">
+    <a href="{{ url_for(endpoint) }}"
+       class="nav-link{% if request.endpoint == endpoint %} active{% endif %}"
+       aria-current="{% if request.endpoint == endpoint %}page{% endif %}">
+       {{ text }}
+    </a>
+  </li>
+{% endmacro %}

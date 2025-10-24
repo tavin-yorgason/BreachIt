@@ -5,7 +5,10 @@ from llm_communication import send_message_to_llm
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+from pathlib import Path
+
+env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=env_path)
 
 app = Flask(__name__)
 
@@ -13,18 +16,11 @@ app = Flask(__name__)
 # SQL Communication
 # ----------------------
 def get_db_connection():
-    db_user = os.getenv("DB_USER")
-    db_pass = os.getenv("DB_PASSWORD")
-    db_host = os.getenv("DB_HOST")
-    db_name = os.getenv("DB_NAME")
-
-    print(f"username: {db_user} | password: {db_pass} | host: {db_host} | name: {db_name}")
-
     return mysql.connector.connect(
-        host=db_host,
-        user=db_user,
-        password=db_pass,
-        database=db_name
+        host = os.getenv("DB_HOST"),
+        user = os.getenv("DB_USER"),
+        password = os.getenv("DB_PASSWORD"),
+        database = os.getenv("DB_NAME")
     )
 
 def execute_query(user_query):
@@ -52,11 +48,8 @@ def run_query():
     user_query = request.form['query']
 
     try:
-        print("about to call exec query")
         db_response = execute_query(user_query)
         
-        print("hellooooooooooooooooooooooooooo")
-
         # Build message and send to LLM
         message_llm = build_llm_message(user_query, db_response)
         llm_output = send_message_to_llm(message_llm)
@@ -80,7 +73,6 @@ def about():
 
 @app.route('/queries')
 def queries():
-    app.logger.error("This is an error message")
     return render_template("queries.html")
 
 @app.route('/contact')

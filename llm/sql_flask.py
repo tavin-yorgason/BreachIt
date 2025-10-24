@@ -1,7 +1,8 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template
 import mysql.connector
 from build_llm_message import build_llm_message
 from llm_communication import send_message_to_llm
+import os
 
 app = Flask(__name__)
 
@@ -9,11 +10,16 @@ app = Flask(__name__)
 # SQL Communication
 # ----------------------
 def get_db_connection():
+    db_user = os.getenv("DB_USER")
+    db_pass = os.getenv("DB_PASSWORD")
+    db_host = os.getenv("DB_HOST")
+    db_name = os.getenv("DB_NAME")
+
     return mysql.connector.connect(
-        host="localhost",
-        user="flask_user",
-        password="strongpassword",
-        database="flask_db"
+        host=db_host,                   #change to the IP so everyone can use it need to be adjusted depending where we are
+        user=db_user,
+        password=db_pass,
+        database=db_name
     )
 
 def execute_query(user_query):
@@ -36,31 +42,19 @@ def execute_query(user_query):
         conn.close()
     return result
 
-# ----------------------
-# Flask Routes
-# ----------------------
-html_form = """
-<h2>SQL Query Tester</h2>
-<form action="/run_query" method="post">
-    <input type="text" name="query" placeholder="Enter SQL query" size="80">
-    <input type="submit" value="Run Query">
-</form>
-"""
-
 @app.route('/')
 def index():
-    return render_template_string(html_form)
+    return render_template('queries.html')
 
 @app.route('/run_query', methods=['POST'])
 def run_query():
     user_query = request.form['query']
-    db_setup = "Describe your database schema here (tables, columns, etc.)"
 
     try:
         db_response = execute_query(user_query)
 
         # Build message and send to LLM
-        message_llm = build_llm_message(db_setup, user_query, db_response)
+        message_llm = build_llm_message(user_query, db_response)
         llm_output = send_message_to_llm(message_llm)
 
         return f"<h3>LLM Output:</h3><pre>{llm_output}</pre>"

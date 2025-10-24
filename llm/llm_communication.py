@@ -2,8 +2,9 @@ import datetime
 import google.generativeai as genai
 import os
 
+LLM_Key = os.getenv("LLM_KEY")
 # Option 1: Load from environment variable
-genai.configure(api_key=os.environ.get("AIzaSyDM5lLEnfcpz6-vclm9SRbkAQfxKYSU5n4"))
+genai.configure(api_key=os.environ.get(LLM_Key))
 
 model = genai.GenerativeModel('gemini-2.0-flash')
 

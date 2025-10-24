@@ -3,6 +3,7 @@ import mysql.connector
 from build_llm_message import build_llm_message
 from llm_communication import send_message_to_llm
 from dotenv import load_dotenv
+import markdown
 import os
 
 from pathlib import Path
@@ -12,9 +13,6 @@ load_dotenv(dotenv_path=env_path)
 
 app = Flask(__name__)
 
-# ----------------------
-# SQL Communication
-# ----------------------
 def get_db_connection():
     return mysql.connector.connect(
         host = os.getenv("DB_HOST"),
@@ -43,7 +41,6 @@ def execute_query(user_query):
         conn.close()
     return result
 
-@app.route('/run_query', methods=['POST'])
 def run_query():
     user_query = request.form['query']
 
@@ -54,7 +51,7 @@ def run_query():
         message_llm = build_llm_message(user_query, db_response)
         llm_output = send_message_to_llm(message_llm)
 
-        return f"<h3>LLM Output:</h3><pre>{llm_output}</pre>"
+        return markdown.markdown(llm_output)
 
     except Exception as e:
         return f"<h3>Error:</h3> {e}"
@@ -71,9 +68,14 @@ def home():
 def about():
     return render_template("about.html")
 
-@app.route('/queries')
+@app.route('/queries', methods = ["GET", "POST"])
 def queries():
-    return render_template("queries.html")
+    output = ""
+
+    if request.method == "POST":
+        output = run_query() 
+
+    return render_template("queries.html", llm_response = output)
 
 @app.route('/contact')
 def contact():

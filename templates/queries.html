@@ -10,10 +10,12 @@
   </header>
 
   <!-- Main Container -->
-  <main class="container d-flex justify-content-center pb-5">
+  <main class="container pb-5">
+    <div class="row g-4 align-items-stretch">
+    <div class="col-12 col-lg-6 d-flex">
     <div class="glass-card page-center">
       <h2 class="h4 text-center mb-3">Write Your Query</h2>
-      <form action="/run_query" method="post">
+      <form action="/queries" method="POST">
         <div class="mb-4">
           <textarea
           class="form-control"
@@ -25,6 +27,15 @@
         </div>
         <button type="submit" class="btn btn-glass w-100">Submit</button>
       </form>
+    </div>
+    </div>
+    
+      <div class="col-12 col-lg-6 d-flex">
+        <div class="glass-card page-center">
+          <h2 class="h4 text-center mb-3">Response</h2>
+          <div>{{ llm_response|safe }}</div>
+        </div>
+      </div>
     </div>
   </main>
 {% endblock %}

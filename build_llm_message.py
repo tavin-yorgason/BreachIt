@@ -1,7 +1,17 @@
-from llm_communication import send_message_to_llm
+from llm_communication_gemini import send_message_to_llm
+from pathlib import Path
 
 def build_llm_message(db_query, db_response):
-    db_setup = "Describe your database schema here (tables, columns, etc.)"
+    file_path = Path(__file__).parent / "database_setup.sql"
+
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+            db_setup = content
+    except FileNotFoundError:
+        print(f"Error: The file '{file_path}' was not found.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
     
     return (
         f"Gemini for this problem decide if the Database was breached or not here is the database setup: {db_setup}"

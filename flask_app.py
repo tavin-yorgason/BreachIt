@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 from build_llm_message import build_llm_message
-from llm_communication import send_message_to_llm
+from llm_communication_gemini import send_message_to_llm
 import database
 import markdown
 import os

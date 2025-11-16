@@ -13,7 +13,7 @@ model = genai.GenerativeModel('gemini-2.0-flash')
 
 def send_message_to_llm(message_for_llm):
     messages = [
-        {"role": "system", "parts": ["You are an LLM deciding if a SQL database has been breached."]},
+        {"role": "assistant", "parts": ["You are an LLM deciding if a SQL database has been breached."]},
         {"role": "user", "parts": [message_for_llm]}
     ]
 

@@ -1,6 +1,6 @@
 create table items
 (
-    id int primary key,
+    item_id int primary key,
     price double,
     name varchar(32),
     description varchar(200)
@@ -15,7 +15,7 @@ create table users
 
 create table transactions
 (
-    id int primary key,
+    transaction_id int primary key,
     username varchar(20),
     time datetime,
     foreign key (username) references users(username)
@@ -28,8 +28,8 @@ create table transaction_items
     price double,
     quantity int,
     primary key (transaction_id, item_id),
-    foreign key (item_id) references items(id),
-    foreign key (transaction_id) references transactions(id)
+    foreign key (item_id) references items(item_id),
+    foreign key (transaction_id) references transactions(transaction_id)
 );
 
 create table cart_items
@@ -39,5 +39,5 @@ create table cart_items
     quantity int,
     primary key (username, item_id),
     foreign key (username) references users(username),
-    foreign key (item_id) references items(id)
+    foreign key (item_id) references items(item_id)
 );

@@ -5,7 +5,7 @@ from pathlib import Path
 
 fake = Faker()
 
-USER_COUNT = 100
+USER_COUNT = 9
 ITEM_COUNT = 50
 TRANSACTION_COUNT = 200
 TRANSACTION_ITEM_COUNT = 300
@@ -26,18 +26,23 @@ def main():
     print("Generating users")
     usernames = []
     columns = ["username", "email", "birthdate"]
-    values = Empty2dArray(USER_COUNT, len(columns))
+    values = Empty2dArray(USER_COUNT + 1, len(columns))
+
     for i in range(USER_COUNT):
         usernames.append(fake.user_name())
         email = fake.free_email()
         birthdate = fake.date_between(start_date = '-90y')
 
         values[i] = [Quote(usernames[i]), Quote(email), Quote(birthdate)]
+    # Add default user for testing purposes
+    usernames.append("default")
+    values[USER_COUNT] = [Quote(usernames[USER_COUNT]), Quote("default@gmail.com"), Quote("1967-06-09")]
+
     ExecuteInsertQuery("users", columns, values)
 
     # Items
     print("Generating items")
-    columns = ["id", "price", "name", "description"]
+    columns = ["item_id", "price", "name", "description"]
     values = Empty2dArray(ITEM_COUNT, len(columns))
     for i in range(ITEM_COUNT):
         item_id = i
@@ -50,7 +55,7 @@ def main():
 
     # Transactions
     print("Generating transactions")
-    columns = ["id", "username", "time"]
+    columns = ["transaction_id", "username", "time"]
     values = Empty2dArray(TRANSACTION_COUNT, len(columns))
     for i in range(TRANSACTION_COUNT):
         transaction_id = i

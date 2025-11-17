@@ -16,16 +16,21 @@ class databases(Enum):
     SHOP = 1
     DB_ATTACKS = 2
 
-def get_connection(database=databases.SHOP):
-    
-    db_name = "SHOP_DB_NAME" if database == databases.SHOP else "DB_ATTACKS_DB_NAME"
+def get_connection(db=databases.SHOP):
 
-    return mysql.connector.connect(
+    db_env_name = "SHOP_DB_NAME" if db == databases.SHOP else "DB_ATTACKS_DB_NAME"
+
+    connection = mysql.connector.connect(
         host = os.getenv("DB_HOST"),
         user = os.getenv("DB_USER"),
         password = os.getenv("DB_PASSWORD"),
-        database = os.getenv(db_name)
+        database = os.getenv(db_env_name)
     )
+
+    if not connection:
+        raise Exception("Failed to connect to database.")
+
+    return connection
 
 def execute_queries(queries, database=databases.SHOP):
     query = ""
@@ -43,11 +48,14 @@ def execute_query(query, database=databases.SHOP):
     """
     conn = get_connection(database)
     cursor = conn.cursor()
+    cursor.execute(query)
+    conn.commit()
     try:
-        cursor.execute(query)
         columns = [c[0] for c in cursor.description]
         rows = cursor.fetchall()
         result = [dict(zip(columns, r)) for r in rows]
+    except:
+        return f"{cursor.rowcount} rows updated."
     finally:
         conn.close()
     return result

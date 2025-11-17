@@ -28,7 +28,7 @@ def normalize_query(query: str) -> str:
 Allowed_Collumns = {
     "item_id", "price", "name", "description",
     "username", "email", "birthdate",
-    "transaction_id", "time", "quantity",
+    "transaction_id", "time", "quantity",   
 }
 
 def is_query_safe(user_query : str) -> bool:

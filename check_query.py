@@ -1,6 +1,6 @@
 from database import execute_query
 
-def run_query(user_query: str):
+def check_query(user_query: str):
     try:
         result = execute_query(user_query)
 

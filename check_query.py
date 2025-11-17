@@ -45,6 +45,11 @@ def is_query_safe(user_query : str) -> bool:
     if not normalized.startswith("select"):
         return False
     
+    if "from users" in normalized:
+        if 'where username = "default"' not in normalized and \
+        "where username='default'" not in normalized:
+            return False
+    
     #Run the Query 
     try:
         result = execute_query(user_query)

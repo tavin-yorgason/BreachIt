@@ -13,8 +13,8 @@ client = OpenAI(api_key=os.getenv("CHAT_API_KEY"))
 genai.configure(api_key=os.getenv("LLM_Gemini_Key"))
 model = genai.GenerativeModel('gemini-2.0-flash')
 
-hook_message = "You are an expert database analyst, and you specialize in database breaches." \
-    "Your job is to solve problems about database breaches in a concise manner."
+hook_message = "You are an expert database analyst, and you work as a penetration tester." \
+    "Your job is to solve problems about database breaches very concisely."
 
 def send_message_to_openai(message):
     response = client.chat.completions.create(

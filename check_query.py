@@ -26,14 +26,8 @@ def normalize_query(query: str) -> str:
 #---------- Rules ----------
 
 Allowed_Collumns = {
-
-    #items 
     "item_id", "price", "name", "description",
-
-    #users
     "username", "email", "birthdate",
-
-    #transactions 
     "transaction_id", "time", "quantity",
 }
 

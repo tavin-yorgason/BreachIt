@@ -32,13 +32,9 @@ def execute_query(query):
     cursor = conn.cursor()
     try:
         cursor.execute(query)
-        if query.strip().lower().startswith("select"):
-            columns = [c[0] for c in cursor.description]
-            rows = cursor.fetchall()
-            result = [dict(zip(columns, r)) for r in rows]
-        else:
-            conn.commit()
-            result = f"{cursor.rowcount} rows affected"
+        columns = [c[0] for c in cursor.description]
+        rows = cursor.fetchall()
+        result = [dict(zip(columns, r)) for r in rows]
     finally:
         conn.close()
     return result

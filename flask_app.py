@@ -1,10 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request
-from build_llm_message import build_llm_message
-#from llm_communication_gemini import send_message_to_llm
-from llm_communication_openai import send_message_to_llm
+from flask import Flask, render_template, redirect, request
+from build_llm_message import build_defender_message, build_attacker_message
+from llm_communication import send_message_to_openai, send_message_to_gemini
+from check_query import check_query
 import database
 import markdown
-import os
 
 app = Flask(__name__)
 
@@ -23,12 +22,15 @@ def run_query():
                             f"{bad_keyword_used}")
 
         db_response = database.execute_query(user_query)
+        does_breach = check_query(user_query)
 
         # Build message and send to LLM
-        message_llm = build_llm_message(user_query, db_response)
-        llm_output = send_message_to_llm(message_llm)
+        message_llm = build_defender_message(user_query, db_response)
+        llm_output = send_message_to_gemini(message_llm)
 
-        return markdown.markdown(llm_output)
+        return markdown.markdown(llm_output +
+            "\n### Does the query actually breach?\n" +
+            "Yes" if does_breach else "No")
 
     except Exception as e:
         return f"<h3>Error:</h3> {e}"
@@ -37,7 +39,7 @@ def contains_any(string, substrings):
     for substring in substrings:
         if substring in string.lower():
             return substring
-    
+
     return ""
 
 @app.route('/')

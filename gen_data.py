@@ -20,7 +20,7 @@ def main():
         print("Error dropping tables. This probably means one or more tables\n"
             " were already gone.")
 
-    database.execute_queries(Path("create_tables.sql").read_text())
+    database.execute_queries(Path("shop_tables.sql").read_text())
 
     # Users
     print("Generating users")

@@ -24,7 +24,7 @@ def run_query():
         return markdown.markdown(llm_output +
             "\n### Does the query actually breach?\n" +
             "Yes" if breaches else
-            llm_output + "\n#### Does the query actually breach?\n" + "No")
+            llm_output + "\n##### Does the query actually breach?\n" + "No")
 
     except Exception as e:
         return f"<h3>Error:</h3> {e}"

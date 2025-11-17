@@ -12,29 +12,36 @@ bad_sql_keywords = [
     'replace', 'drop', 'alter', 'truncate'
 ]
 
-def get_connection():
+class databases(Enum):
+    SHOP = 1
+    DB_ATTACKS = 2
+
+def get_connection(database=databases.SHOP):
+    
+    db_name = "SHOP_DB_NAME" if database == databases.SHOP else "DB_ATTACKS_DB_NAME"
+
     return mysql.connector.connect(
         host = os.getenv("DB_HOST"),
         user = os.getenv("DB_USER"),
         password = os.getenv("DB_PASSWORD"),
-        database = os.getenv("DB_NAME")
+        database = os.getenv(db_name)
     )
 
-def execute_queries(queries):
+def execute_queries(queries, database=databases.SHOP):
     query = ""
     for line in queries.splitlines():
         query += line
 
         if line.endswith(";"):
-            execute_query(query)
+            execute_query(query, database)
             query = ""
 
-def execute_query(query):
+def execute_query(query, database=databases.SHOP):
     """
     Executes a SQL query and returns the results.
     SELECT queries return list of dicts; other queries return a summary string.
     """
-    conn = get_connection()
+    conn = get_connection(database)
     cursor = conn.cursor()
     try:
         cursor.execute(query)

@@ -21,7 +21,7 @@ def read_file(file_path):
         return file.read()
 
 # Set up module
-tables_path = Path(__file__).parent / "create_tables.sql"
+tables_path = Path(__file__).parent / "shop_tables.sql"
 safe_queries_path = Path(__file__).parent / "safe_queries.sql"
 
 db_setup = read_file(tables_path)

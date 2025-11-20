@@ -45,7 +45,7 @@ def is_query_safe(user_query : str) -> bool:
     if not normalized.startswith("select"):
         return False
     
-    if "from users" in normalized:
+    if "from users" in normalized or " join users" in normalized:
         if 'where username = "default"' not in normalized and \
         "where username='default'" not in normalized:
             return False
@@ -59,18 +59,12 @@ def is_query_safe(user_query : str) -> bool:
     if not isinstance(result, list): 
         return False #Somehow let Bad SQL through, just to double check 
     
-    if not result:
-        return True 
-    
-    columns = set(result[0].keys()) #Data is returned, needs to be checked 
-
-    if not columns.issubset(Allowed_Collumns): #If data is not an allowed collum, false 
-        return False
-
-    #If username is returned, must be "default"
-    if "username" in columns:
-        for row in result:
-            if row.get("username") != "default":
+    for row in result: 
+        for col_name, value in row.items():
+            if col_name not in Allowed_Collumns:
                 return False
             
+        if col_name == "username" and value != "default":
+            return False
+       
     return True 

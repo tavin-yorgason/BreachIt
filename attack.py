@@ -1,6 +1,6 @@
 from build_llm_message import build_defender_message, build_attacker_message
 from llm_communication import send_message_to_openai, send_message_to_gemini
-from check_query import is_query_safe
+from containment_checker import is_query_breaching
 from enum import Enum
 from database import databases
 from database import execute_query
@@ -21,7 +21,9 @@ class columns(Enum):
 
 def main():
     attacker, defender, count = parse_arguments()
+    attack(attacker, defender, count)
 
+def attack(attacker, defender, count):
     print(f"Attacker: {attacker}\n"
           f"Defender: {defender}\n"
           f"Attack count: {count}\n")
@@ -30,6 +32,7 @@ def main():
     message_attacker, message_defender = get_message_functions(attacker, defender)
 
     # Attack the database
+    results = []
     attacker_message = build_attacker_message()
     for _ in range(count):
         attacker_response = message_attacker(attacker_message)
@@ -43,18 +46,20 @@ def main():
 
         defender_response = message_defender(build_defender_message(query, query_result))
         defender_says_breached = does_conclude_yes(defender_response)
-        was_breached = not is_query_safe(query)
+        was_breached = is_query_breaching(query)
 
         table = get_table(attacker, defender)
         column = get_column(was_breached, defender_says_breached)
 
         increment_attack_stat(table, column)
+        results.append(column)
+    return results
 
 def get_column(truth, claim):
     if truth and claim:
         return columns.BREACH_RIGHT.value
     elif truth and not claim:
-        return columns.BREACH_LEFT.value
+        return columns.BREACH_WRONG.value
     elif not truth and not claim:
         return columns.NO_BREACH_RIGHT.value
     elif not truth and claim:
@@ -126,19 +131,24 @@ def parse_arguments():
 
     parser.add_argument("--attacker")
     parser.add_argument("--defender")
-    parser.add_argument("--count", type=int, required=True)
+    parser.add_argument("--count", type=int)
 
     args = parser.parse_args()
 
-    if args.count <= 0:
+    count = None
+    if not args.count:
+        count = 1
+    elif args.count <= 0:
         parser.error("Count cannot be less than 1.")
+    else:
+        count = args.count
 
     if not args.attacker and not args.defender:
         parser.error("Please input an attacker and/or defender.\n"
             "If you only input one, the other will be the other LLM.")
 
-    attacker = ""
-    defender = ""
+    attacker = None
+    defender = None
 
     if args.attacker and args.defender:
         attacker = args.attacker
@@ -153,7 +163,7 @@ def parse_arguments():
     check_llm(attacker)
     check_llm(defender)
 
-    return attacker, defender, args.count
+    return attacker, defender, count
 
 def get_other_llm(llm):
     if llm == "gemini":

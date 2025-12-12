@@ -1,0 +1,21 @@
+<div class="glass-card page-center mt-4">
+  <h2 class="h4 text-center mb-3">{{ title }}</h2>
+
+  <label class="form-label">Query Used</label>
+  <div class="form-control mb-3 p-3" style="height:auto; max-height:200px; overflow:auto;">
+        {{ original_query }}
+  </div>
+
+  <label class="form-label">Database Response</label>
+  <div class="form-control mb-3 p-3" style="height:auto; max-height:300px; overflow:auto;">
+      {{ text|safe }}
+  </div>
+
+  <form method="POST">
+    <input type="hidden" name="user_query" value="{{ original_query }}">
+    <input type="hidden" name="db_response" value="{{ text }}">
+    <button name="decision" value="yes" class="btn btn-success w-100 mb-2">Yes</button>
+    <button name="decision" value="no" class="btn btn-danger w-100">No</button>
+  </form>
+</div>
+

@@ -12,28 +12,88 @@
   <!-- Main Container -->
   <main class="container pb-5">
     <div class="row g-4 align-items-stretch">
-    <div class="col-12 col-lg-6 d-flex">
-    <div class="glass-card page-center">
-      <h2 class="h4 text-center mb-3">Write Your Query</h2>
-      <form action="/queries" method="POST">
-        <div class="mb-4">
-          <textarea
-          class="form-control"
-          name="query"
-          rows="8"
-          placeholder="Enter a full query..."
-          required
-          ></textarea>
-        </div>
-        <button type="submit" class="btn btn-glass w-100">Submit</button>
-      </form>
-    </div>
-    </div>
-    
       <div class="col-12 col-lg-6 d-flex">
         <div class="glass-card page-center">
-          <h2 class="h4 text-center mb-3">Response</h2>
-          <div>{{ llm_response|safe }}</div>
+          <h2 class="h4 text-center mb-3">Write Your Query</h2>
+
+          <!-- Tabs -->
+          <ul class="nav nav-tabs mb-3" id="queryTabs" role="tablist">
+            <li class="nav-item">
+              <button class="nav-link active" id="sql-tab"
+                      data-bs-toggle="tab" data-bs-target="#sql"
+                      type="button" role="tab">SQL</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" id="simulation-tab"
+                      data-bs-toggle="tab" data-bs-target="#simulation"
+                      type="button" role="tab">Simulation</button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content" id="queryTabsContent">
+
+            <!-- SQL TAB -->
+            <div class="tab-pane fade show active" id="sql" role="tabpanel">
+              <form action="/queries" method="POST">
+                <textarea class="form-control" name="query" rows="8"
+                          placeholder="Write your SQL query..."
+                          required></textarea>
+                <button class="btn btn-glass w-100 mt-3">Submit</button>
+              </form>
+            </div>
+
+            <!-- Simulation TAB -->
+            <div class="tab-pane fade" id="simulation" role="tabpanel">
+              <form action="/queries" method="POST" class="d-flex flex-column">
+                <label class="form-label" for="attacker">Attacker</label>
+                <select class="form-control mb-3" name="attacker" required>
+                  <option value="gemini">Gemini</option>
+                  <option value="openai">ChatGPT</option>
+                </select>
+
+                <label class="form-label" for="defender">Defender</label>
+                <select class="form-control mb-3" name="defender" required>
+                  <option value="gemini">Gemini</option>
+                  <option value="openai">ChatGPT</option>
+                </select>
+
+                <label class="form-label">Number of simulations</label>
+                <input type="number" name="count" class="form-control mb-3" min="1" max="100">
+                <button class="btn btn-glass w-100 mt-3">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="glass-card page-center">
+          <h2 class="h4 text-center mb-3">Write Your Query</h2>
+          <form action="/queries" method="POST">
+            <div class="mb-4">
+              <textarea
+              class="form-control"
+              name="query"
+              rows="8"
+              placeholder="Enter a full query..."
+              required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn btn-glass w-100">Submit</button>
+          </form>
+        </div>-->
+      </div>
+
+      <div class="col-12 col-lg-6 d-flex">
+        <div class="glass-card page-center">
+          {% if not show_review %}
+            <h2 class="h4 text-center mb-3">Response</h2>
+            <div>{{ llm_response|safe }}</div>
+          {% endif %}
+
+          <!-- YES/NO REVIEW MODULE -->
+          {% if show_review %}
+            {% include "components/review_module.html" %}
+          {% endif %}
         </div>
       </div>
     </div>

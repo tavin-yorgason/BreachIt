@@ -49,7 +49,13 @@ def execute_query(query, database=databases.SHOP):
     conn = get_connection(database)
     cursor = conn.cursor()
     cursor.execute(query)
-    conn.commit()
+
+    # Data must be committed if it alters the database.
+    try:
+        sanitize_query(query)
+    except:
+        conn.commit()
+
     try:
         columns = [c[0] for c in cursor.description]
         rows = cursor.fetchall()
@@ -65,9 +71,70 @@ def sanitize_query(query):
     if bad_keyword != "":
         raise Exception("Database-altering SQL keyword used: {bad_keyword}")
 
+def does_contain_altering_keyword(query):
+    for substring in bad_sql_keywords:
+        if substring in query:
+            return True
+    return False
+
 def first_contained_in(string, substrings):
     for substring in substrings:
         if substring in string:
             return substring
 
     return ""
+
+    #Added for Query_Safety_Check
+
+def execute_query_redacted(query: str):
+    """
+    Run `query` in a 'redacted world' using TEMPORARY TABLEs
+    where only default-user data exists.
+    """
+    conn = get_connection()
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                CREATE TEMPORARY TABLE users AS
+                SELECT *
+                FROM users
+                WHERE username = 'default';
+            """)
+
+            cur.execute("""
+                CREATE TEMPORARY TABLE transactions AS
+                SELECT *
+                FROM transactions
+                WHERE username = 'default';
+            """)
+
+            cur.execute("""
+                CREATE TEMPORARY TABLE transaction_items AS
+                SELECT ti.*
+                FROM transaction_items ti
+                JOIN transactions t USING (transaction_id);
+            """)
+
+            cur.execute("""
+                CREATE TEMPORARY TABLE cart_items AS
+                SELECT *
+                FROM cart_items
+                WHERE username = 'default';
+            """)
+
+            cur.execute("""
+                CREATE TEMPORARY TABLE items AS
+                SELECT *
+                FROM items;
+            """)
+
+            cur.execute(query)
+
+            if query.strip().lower().startswith("select"):
+                return cur.fetchall()
+            else:
+                conn.commit()
+                return f"{cur.rowcount} rows affected"
+
+    finally:
+        conn.close()
